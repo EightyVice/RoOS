@@ -54,10 +54,11 @@ entry:
     call print_hex      ; at the second sector for checking if it's loaded correctly.
 
     mov cx, [es:0x0]                ; First 2 bytes
-    cmp cx, 0x6DEB                  ; If the bytes = 0x6DEB 
-    je .correct_sector_data         ; Run the second stage bootloader
+    cmp cx, 0xB7E9                  ; If the bytes = 0x6DEB 
+    jne .correct_sector_data         ; Run the second stage bootloader
     mov si, str_stage2_corrupted    ; Oh no,
     call Print                      ; something wrong! :(
+    cli
     hlt                             ; Halt!
 
 .correct_sector_data:
@@ -66,9 +67,9 @@ entry:
 
 
 dots db "...", 0
-str_stage2_corrupted db "Bootloader corrupted. Halting.", 0
-str_disk_reset db "Resetting Floppy Disk...", 0
-str_disk_load db "Done. Loading stage 2...", 0
+str_stage2_corrupted db "Bootloader corrupted. Halting.", 0xD, 0xA, 0
+str_disk_reset db "Resetting Floppy Disk...", 0xD, 0xA, 0
+str_disk_load db "Done. Loading stage 2...", 0xD, 0xA, 0
 
 
     times 510 - ($-$$) db 0    ; Fill the sector by zeroes
