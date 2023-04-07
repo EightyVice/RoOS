@@ -1,39 +1,54 @@
-bits 16
-
-
-
-gdt_data:
-    dd 0                ; Null-
-    dd 0                ; -descriptr
-
-;   Code Descriptor
-    dw 0x0FFFF          ; Segment Low Limit
-    dw 0                ; Segment Base Low
-    db 0                ; Segment Base Middle
-    db 10011010b        ; Access
-    db 11001111b        ; Granuality
-    db 0                ; Base High
-
-;   Data Descriptor
-    dw 0x0FFFF          ; Segment Limit Low
-    dw 0                ; Segment Base Low
-    db 0                ; Segment Base Middle
-    db 10010010b        ; Access
-    db 11001111b        ; Granuality
-    db 0                ; Base High
-    
-gdt_end:
-toc:
-    dw gdt_end - gdt_data - 1   ; Size of GDT
-    dd gdt_data                 ; Base of GDT
-
-; Procedure: InstallGDT
-; Arugments: None
-; - Installs the Global Descriptor Table
+;
+; gdt.inc
+; 
+; Purpose: Setting up the global descriptor talble.
+ 
+%ifndef __GDT_INC_67343546FDCC56AAB872_INCLUDED__
+%define __GDT_INC_67343546FDCC56AAB872_INCLUDED__
+ 
+bits	16
+ 
+;*******************************************
+; InstallGDT()
+;	- Install our GDT
+;*******************************************
+ 
 InstallGDT:
-    cli                 ; Clear Interupts
-    pusha               ; Save Registers
-    lgdt [toc]          ; Load GDT into GDTR
-    sti                 ; Enable Interupts
-    popa                ; Restore Registers
-    ret                 ; Return
+ 
+	cli				; clear interrupts
+	pusha				; save registers
+	lgdt 	[toc]			; load GDT into GDTR
+	sti				; enable interrupts
+	popa				; restore registers
+	ret				; All done!
+ 
+;*******************************************
+; Global Descriptor Table (GDT)
+;*******************************************
+ 
+gdt_data: 
+	dq 0 				; null descriptor
+
+; gdt code:				; code descriptor
+	dw 0FFFFh 			; limit low
+	dw 0 				; base low
+	db 0 				; base middle
+	db 10011010b 			; access
+	db 11001111b 			; granularity
+	db 0 				; base high
+ 
+; gdt data:				; data descriptor
+	dw 0FFFFh 			; limit low (Same as code)
+	dw 0 				; base low
+	db 0 				; base middle
+	db 10010010b 			; access
+	db 11001111b 			; granularity
+	db 0				; base high
+ 
+end_of_gdt:
+toc: 
+	dw end_of_gdt - gdt_data - 1 	; limit (Size of GDT)
+	dd gdt_data 			; base of GDT
+ 
+ 
+%endif ;__GDT_INC_67343546FDCC56AAB872_INCLUDED__

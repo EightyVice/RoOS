@@ -7,19 +7,19 @@
 _:
     bits 16
     org 0x7c00              ; BIOS loads the boot sector into 0x7C00
+                            ; OPINION: ORG 0 then enforce CS:IP for portability
 
-includes:
-    jmp entry
-    %include "print.inc"    
-   
+
+STAGE2_ENTRY equ 0x7E00
+
 entry:
     xor ax, ax
     mov ds, ax
     mov es, ax
 
-    mov ax, 0x9000  ;
-    mov ss, ax      ; Stack setupping
-    mov sp,0xF000   ;
+    mov ax, 0x9000   ;
+    mov ss, ax       ; Stack setupping
+    mov sp, 0xF000   ;
 
 .reset_disk:
     mov si, str_disk_reset
@@ -32,9 +32,9 @@ entry:
 
 .load_second_stage:
     ; Load second stage of bootloader at address 0x1000:0x0
-    mov ax, 0x1000  ;
-    mov es, ax      ; Read the sector into address 0x1000:0
-    xor bx, bx      ;
+    mov ax, 0x100        ;
+    mov es, ax                  ; Read the sector into address 0x1000:0
+    xor bx, bx                  ;
    
 
     mov ah, 0x02    ; READ_DISK_SETOR
@@ -49,28 +49,39 @@ entry:
     call Print
     jc .load_second_stage   ; On error, retry.
 
+    mov si, str_stage2_key
+    call Print
+
     ; Jump to the Stage 2 sector and start execution
     mov dx, [es:0x0]    ; For debugging purposes print the first 2 bytes
     call print_hex      ; at the second sector for checking if it's loaded correctly.
 
+    mov si, str_newline
+    call Print
+
     mov cx, [es:0x0]                ; First 2 bytes
-    cmp cx, 0xB7E9                  ; If the bytes = 0x6DEB 
-    jne .correct_sector_data         ; Run the second stage bootloader
+    cmp cx, 0
+    je .incorrect_sector_data       ; Run the second stage bootloader
+    jmp 0x100:0            ; Jump there to execute
+
+    ; Halting will be done at the second stage!
+
+
+.incorrect_sector_data:
     mov si, str_stage2_corrupted    ; Oh no,
     call Print                      ; something wrong! :(
     cli
     hlt                             ; Halt!
 
-.correct_sector_data:
-    jmp 0x1000:0x0
-    ; Halting will be done at the second stage!
 
-
-dots db "...", 0
+str_newline db 0xD, 0xA, 0
 str_stage2_corrupted db "Bootloader corrupted. Halting.", 0xD, 0xA, 0
+str_stage2_key db "Stage 2 first two bytes: ", 0
+
 str_disk_reset db "Resetting Floppy Disk...", 0xD, 0xA, 0
 str_disk_load db "Done. Loading stage 2...", 0xD, 0xA, 0
 
+    %include "print.inc"    
 
     times 510 - ($-$$) db 0    ; Fill the sector by zeroes
     dw 0xAA55                  ; Boot Signature

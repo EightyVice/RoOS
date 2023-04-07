@@ -6,62 +6,59 @@
 ;            - Loading Kernel
 _:
     bits 16
-    org 0   ; IMPORTANT: originate from zero since 
-            ; we append the stages into the sectors anyway
+    org 0x1000
 
 
-includes:
-    jmp entry
-    %include "print.inc"
-    %include "gdt.inc"
-
-heystr db "Hello from second stage", 0xD, 0xA, 0x0
-str_loading_os db "Loading Operating System...", 0xD, 0xA, 0x0
 entry:
-    cli
-    mov ax, cs      ; For god sake never remove that! 
-    mov ds, ax      ; enforce the segments from the Code Segment (CS)
-    mov es, ax   
-    mov ax, 0x9000
-    mov ss, ax
-    mov sp, 0xFFFF
-    sti
+	cli				; clear interrupts
+	xor	ax, ax			; null segments
+	mov	ds, ax
+	mov	es, ax
+	mov	ax, 0x9000		; stack begins at 0x9000-0xffff
+	mov	ss, ax
+	mov	sp, 0xFFFF
+	sti				; enable interrupts
 
-    mov si, heystr
-    call Print
+	mov si, hey_str
+	call Print
 
-    ; Install Global Descriptor Table
-    ;InstallGDT:
-    cli                 ; Clear Interupts
-    pusha               ; Save Registers
-    ;lgdt [toc]          ; Load GDT into GDTR
-    ;sti                 ; Enable Interupts
-    popa                ; Restore Registers
-    ;ret                 ; Return
+	; Install GDT
+	call InstallGDT
+
+	cli				; clear interrupts
+	mov	eax, cr0		; set bit 0 in cr0--enter pmode
+	or	eax, 1
+	mov	cr0, eax
+
+	jmp	08h:PMODE
 
 
-    ; Convert into Protected Mode
-    cli                 ; Clear Interupts
-    mov eax, cr0        ; Set bit 0 in CR0 (Enter Protected Mode)
-    or  eax, 1          
-    mov cr0, eax
-    
-    jmp 0x8:pmode
-;======================================
-;       32-bit Protected Mode
-;======================================
+
+
 bits 32
-pmode:
-    mov ax, 0x10
-    mov ds, ax
-    mov ss, ax
-    mov es, ax
-    mov esp, 0x90000
+PMODE:
+	; -----------------------
+	; Start of Protected Mode
+	; -----------------------
 
 
+	mov		ax, 0x10		; set data segments to data selector (0x10)
+	mov		ds, ax
+	mov		ss, ax
+	mov		es, ax
+	mov		esp, 90000h		; stack begins from 90000h
 
-    cli
-    hlt
+
+STOP: 
+	cli
+	hlt
+
+hey_str db "Hello from second stage", 0xD, 0xA, 0x0
+str_loading_os db "Loading Operating System...", 0xD, 0xA, 0x0
+
+	%include "print.inc"
+	%include "gdt.inc"
+
     times 512 - ($-$$) db 0    ; Fill the sector by zeroes and no boot signature needed. it's our sector
 
 
