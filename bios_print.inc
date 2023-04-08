@@ -1,5 +1,5 @@
 ;
-; print.inc
+; bios_print.inc
 ; 
 ; Purpose: Providing BIOS output utility (only at Real Mode)
 

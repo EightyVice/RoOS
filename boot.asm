@@ -81,7 +81,7 @@ str_stage2_key db "Stage 2 first two bytes: ", 0
 str_disk_reset db "Resetting Floppy Disk...", 0xD, 0xA, 0
 str_disk_load db "Done. Loading stage 2...", 0xD, 0xA, 0
 
-    %include "print.inc"    
+    %include "bios_print.inc"    
 
     times 510 - ($-$$) db 0    ; Fill the sector by zeroes
     dw 0xAA55                  ; Boot Signature

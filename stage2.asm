@@ -19,11 +19,16 @@ entry:
 	mov	sp, 0xFFFF
 	sti				; enable interrupts
 
-	mov si, hey_str
-	call Print
-
 	; Install GDT
 	call InstallGDT
+
+	; Enable Gate A20 Address Line for accessing
+	; 4 gigabyte of RAM (0-0xFFFFFFFF)
+	cli
+	push ax
+	mov  al, 0xdd	; send enable a20 address line command to controller
+	out	 0x64, al
+	pop	 ax
 
 	cli				; clear interrupts
 	mov	eax, cr0		; set bit 0 in cr0--enter pmode
@@ -49,15 +54,27 @@ PMODE:
 	mov		esp, 90000h		; stack begins from 90000h
 
 
+
+	call ClearScreen
+
+	mov ebx, str_welcome
+	call PrintString
+
+	mov ebx, str_loading_os
+	call PrintString
+	
+
 STOP: 
 	cli
 	hlt
 
 hey_str db "Hello from second stage", 0xD, 0xA, 0x0
-str_loading_os db "Loading Operating System...", 0xD, 0xA, 0x0
+str_loading_os db "Loading Operating System...", 0xA, 0x0
+str_welcome db "                           << Welcome to RoOS >>", 0xA, 0x0
 
-	%include "print.inc"
+	;%include "bios_print.inc"
 	%include "gdt.inc"
+	%include "stdio.inc"
 
     times 512 - ($-$$) db 0    ; Fill the sector by zeroes and no boot signature needed. it's our sector
 
