@@ -32,9 +32,10 @@ entry:
 
 .load_second_stage:
     ; Load second stage of bootloader at address 0x1000:0x0
-    mov ax, 0x100        ;
-    mov es, ax                  ; Read the sector into address 0x1000:0
-    xor bx, bx                  ;
+    mov ax, 0                   ;
+    mov es, ax                  ; Read the sector into address 0:0xSTAGE2_ENTRY
+    mov ax, STAGE2_ENTRY
+    mov bx, ax                  ;
    
 
     mov ah, 0x02    ; READ_DISK_SETOR
@@ -42,7 +43,7 @@ entry:
     mov ch, 0       ; Track
     mov cl, 2       ; Sector number (sectors strats from 1)
     mov dh, 0       ; Head number 
-    mov dl, 0       ; Drive number (0=A:, 1=2nd floppy, 80h=drive 0, 81h=drive 1)
+    mov dl, 0x80       ; Drive number (0=A:, 1=2nd floppy, 80h=drive 0, 81h=drive 1)
     int 0x13
 
     mov si, str_disk_load
@@ -62,7 +63,7 @@ entry:
     mov cx, [es:0x0]                ; First 2 bytes
     cmp cx, 0
     je .incorrect_sector_data       ; Run the second stage bootloader
-    jmp 0x100:0            ; Jump there to execute
+    jmp 0:STAGE2_ENTRY            ; Jump there to execute
 
     ; Halting will be done at the second stage!
 

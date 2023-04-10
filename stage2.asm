@@ -6,10 +6,27 @@
 ;            - Loading Kernel
 _:
     bits 16
-    org 0x1000
+    org 0x7E00
 
 
 entry:
+	; 0x10000
+    mov ax, 0x1000                   ;
+    mov es, ax                  ; Read the sector into address 0:0xSTAGE2_ENTRY
+    mov ax, 0
+    mov bx, ax                  ;
+
+.load_kernel:
+    mov ah, 0x02    ; READ_DISK_SETOR
+    mov al, 24      ; Number of sectors to read
+    mov ch, 0       ; Track
+    mov cl, 3       ; Sector number (sectors strats from 1)
+    mov dh, 0       ; Head number 
+    mov dl, 0x80    ; Drive number (0=A:, 1=2nd floppy, 80h=drive 0, 81h=drive 1)
+    int 0x13
+    jc .load_kernel   ; On error, retry.
+
+
 	cli				; clear interrupts
 	xor	ax, ax			; null segments
 	mov	ds, ax
@@ -62,6 +79,11 @@ PMODE:
 
 	mov ebx, str_loading_os
 	call PrintString
+	
+
+
+	; Call Kernel (exists there)
+	jmp 0x8:0x10000
 	
 
 STOP: 

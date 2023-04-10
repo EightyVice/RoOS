@@ -29,7 +29,7 @@ InstallGDT:
 gdt_data: 
 	dq 0 				; null descriptor
 
-; gdt code:				; code descriptor
+; Kernel Space Code Descriptor
 	dw 0FFFFh 			; limit low
 	dw 0 				; base low
 	db 0 				; base middle
@@ -37,14 +37,30 @@ gdt_data:
 	db 11001111b 			; granularity
 	db 0 				; base high
  
-; gdt data:				; data descriptor
+; Kernel Space Data Descriptor
 	dw 0FFFFh 			; limit low (Same as code)
 	dw 0 				; base low
 	db 0 				; base middle
-	db 10010010b 			; access
-	db 11001111b 			; granularity
+	db 10010010b 		; access
+	db 11001111b 		; granularity
 	db 0				; base high
  
+; User Space code
+	dw 0FFFFh 			; limit low
+	dw 0 				; base low
+	db 0 				; base middle
+	db 11111010b 		; access - Notice that bits 5 and 6 (privilege level) are 11b for Ring 3
+	db 11001111b 		; granularity
+	db 0 				; base high
+ 
+; User Space data
+	dw 0FFFFh 			; limit low (Same as code)
+	dw 0 				; base low
+	db 0 				; base middle
+	db 11110010b 		; access - Notice that bits 5 and 6 (privilege level) are 11b for Ring 3
+	db 11001111b 		; granularity
+	db 0				; base high
+	
 end_of_gdt:
 toc: 
 	dw end_of_gdt - gdt_data - 1 	; limit (Size of GDT)
