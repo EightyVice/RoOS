@@ -51,8 +51,8 @@ void terminal_initialize(void)
 {
 	terminal_row = 0;
 	terminal_column = 0;
-	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_GREEN);
-	terminal_buffer = (uint16_t*) 0xB8000;
+	terminal_color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_LIGHT_BLUE);
+	terminal_buffer = (uint16_t*)0xB8000;
 	for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
 			const size_t index = y * VGA_WIDTH + x;
@@ -74,6 +74,12 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
  
 void terminal_putchar(char c) 
 {
+    if(c == '\n'){
+        terminal_row++;  // Carriage Return
+        terminal_column = 0;   // Line feed
+        return;
+    }
+
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
@@ -88,13 +94,37 @@ void terminal_write(const char* data, size_t size)
 		terminal_putchar(data[i]);
 }
  
-void terminal_writestring(const char* data) 
+void terminal_print(const char* data) 
 {
 	terminal_write(data, strlen(data));
 }
- 
+
+void terminal_title(const char* title){
+    terminal_setcolor(VGA_COLOR_LIGHT_GREY);
+}
+
+void terminal_print_centered(const char* text){
+    size_t len = strlen(text);
+    terminal_column = (VGA_WIDTH / 2) - (len / 2) - 1;
+    terminal_print(text);
+    terminal_row++;
+}
+
+#ifdef __GNUC__
+__attribute__((section(".entry")))
+#endif
 void kernel_entry()  {
     terminal_initialize();
-    //terminal_writestring("Hello, kernel World!");
+    terminal_print_centered("Hello from Kernel!! ^_^");
+    terminal_print_centered("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    terminal_print_centered("");
+    terminal_print_centered("RoOS Kernel version 0.1 - 2023");
+    terminal_print_centered("");
+    terminal_print_centered("");
+    terminal_column = 0;
+    terminal_print("This is from C.\n");
+    terminal_print("$>> _");
+    
+    while(1){} // Loop forever to prevent death!!
 }
 

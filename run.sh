@@ -3,9 +3,9 @@ nasm boot.asm -f bin -o boot.bin
 nasm stage2.asm -f bin -o stage2.bin
 
 # Compile the kernel
-gcc kernel.c -Wall -nostdlib -nostartfiles -o kernel.o   # Compile
-ld -T linker.ld -o kernel kernel.o                       # Link
-objcopy -O binary kernel kernel.bin                      # Get binary image
+gcc kernel.c -c -Wall -nostdlib -nostartfiles -ffreestanding -o kernel.o   # Compile
+ld -T linker.ld -o kernel kernel.o -Map=kernel.map          # Link
+objcopy -O binary kernel kernel.bin                         # Get binary image
 
 # build a floppy disk image by appending sectors.
 dd if=boot.bin of=disk.img conv=notrunc                  # Stage 1 Sector

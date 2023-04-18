@@ -13,7 +13,7 @@ _:
 STAGE2_ENTRY equ 0x7E00
 
 entry:
-    xor ax, ax
+    xor ax, ax  ; ax = ax xor ax ; mov ax, 0
     mov ds, ax
     mov es, ax
 

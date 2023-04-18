@@ -18,7 +18,7 @@ entry:
 
 .load_kernel:
     mov ah, 0x02    ; READ_DISK_SETOR
-    mov al, 24      ; Number of sectors to read
+    mov al, 10      ; Number of sectors to read
     mov ch, 0       ; Track
     mov cl, 3       ; Sector number (sectors strats from 1)
     mov dh, 0       ; Head number 
@@ -52,6 +52,17 @@ entry:
 	or	eax, 1
 	mov	cr0, eax
 
+
+	; Disable the cursor
+	mov dx, 0x3D4
+	mov al, 0xA	; low cursor shape register
+	out dx, al
+ 
+	inc dx
+	mov al, 0x20	; bits 6-7 unused, bit 5 disables the cursor, bits 0-4 control the cursor shape
+	out dx, al
+
+
 	jmp	08h:PMODE
 
 
@@ -83,7 +94,7 @@ PMODE:
 
 
 	; Call Kernel (exists there)
-	jmp 0x8:0x10000
+	jmp 0x10000
 	
 
 STOP: 
