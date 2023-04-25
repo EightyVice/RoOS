@@ -63,7 +63,7 @@ entry:
     mov cx, [es:0x0]                ; First 2 bytes
     cmp cx, 0
     je .incorrect_sector_data       ; Run the second stage bootloader
-    jmp 0:STAGE2_ENTRY            ; Jump there to execute
+    jmp 0:STAGE2_ENTRY              ; Jump there to execute
 
     ; Halting will be done at the second stage!
 

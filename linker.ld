@@ -4,7 +4,7 @@ SECTIONS {
     /* Code Segments */
     .text : 
     {
-        *(.entry);
+        *(.entry)
         *(.text*)
     }
 

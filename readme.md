@@ -17,7 +17,7 @@ The OS targets Legacy BIOS, not UEFI so it's MBR (Master Boot Record). I'm not u
 
 
 ## Development Environent
-I'm working on Windows, WSL and using NASM as assembler, QEMU for testing as a VM. A gcc cross-compiler will be used for developing the kernel. few utilities used like `dd` for building the floppy disk image.
+I'm working on Windows, WSL and using NASM as assembler, QEMU for testing as a VM. A i386 GCC cross-compiler is used for developing the kernel. few utilities used like `dd` for building the floppy disk image.
 **Install the following packages:**
 
 `sudo apt-get make gcc nasm qemu-system`
