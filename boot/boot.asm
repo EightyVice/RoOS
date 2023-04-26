@@ -77,7 +77,7 @@ entry:
 
 str_newline db 0xD, 0xA, 0
 str_stage2_corrupted db "Bootloader corrupted. Halting.", 0xD, 0xA, 0
-str_stage2_key db "Stage 2 first two bytes: ", 0
+str_stage2_key db "Stage 2 first two bytes:: ", 0
 
 str_disk_reset db "Resetting Floppy Disk...", 0xD, 0xA, 0
 str_disk_load db "Done. Loading stage 2...", 0xD, 0xA, 0

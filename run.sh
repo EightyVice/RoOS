@@ -7,7 +7,7 @@ i386_elf_gcc=./i386-elf-7.5.0-Linux-x86_64/bin/i386-elf-gcc
 i386_elf_ld=./i386-elf-7.5.0-Linux-x86_64/bin/i386-elf-ld
 i386_elf_objcopy=./i386-elf-7.5.0-Linux-x86_64/bin/i386-elf-objcopy
 
-$i386_elf_gcc kernel.c -c -Wall -nostdlib -nostartfiles -ffreestanding -o kernel.o   # Compile
+$i386_elf_gcc kernel_main.c -c -Wall -nostdlib -nostartfiles -ffreestanding -o kernel.o   # Compile
 $i386_elf_ld -T linker.ld -o kernel kernel.o -Map=kernel.map          # Link
 $i386_elf_objcopy -O binary kernel kernel.bin                         # Get binary image
 
