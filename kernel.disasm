@@ -1,0 +1,192 @@
+
+out/kernel.elf:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00010000 <color_attr>:
+   10000:	55                   	push   %ebp
+   10001:	89 e5                	mov    %esp,%ebp
+   10003:	8b 45 08             	mov    0x8(%ebp),%eax
+   10006:	0f b6 c0             	movzbl %al,%eax
+   10009:	c1 e0 04             	shl    $0x4,%eax
+   1000c:	88 c2                	mov    %al,%dl
+   1000e:	8b 45 0c             	mov    0xc(%ebp),%eax
+   10011:	09 d0                	or     %edx,%eax
+   10013:	5d                   	pop    %ebp
+   10014:	c3                   	ret    
+
+00010015 <vga_set_cursor>:
+   10015:	55                   	push   %ebp
+   10016:	89 e5                	mov    %esp,%ebp
+   10018:	8b 45 08             	mov    0x8(%ebp),%eax
+   1001b:	a2 71 01 01 00       	mov    %al,0x10171
+   10020:	8b 45 0c             	mov    0xc(%ebp),%eax
+   10023:	a2 70 01 01 00       	mov    %al,0x10170
+   10028:	90                   	nop
+   10029:	5d                   	pop    %ebp
+   1002a:	c3                   	ret    
+
+0001002b <vga_putat_c>:
+   1002b:	55                   	push   %ebp
+   1002c:	89 e5                	mov    %esp,%ebp
+   1002e:	83 ec 18             	sub    $0x18,%esp
+   10031:	8b 55 08             	mov    0x8(%ebp),%edx
+   10034:	8b 45 14             	mov    0x14(%ebp),%eax
+   10037:	88 55 ec             	mov    %dl,-0x14(%ebp)
+   1003a:	66 89 45 e8          	mov    %ax,-0x18(%ebp)
+   1003e:	8b 55 10             	mov    0x10(%ebp),%edx
+   10041:	89 d0                	mov    %edx,%eax
+   10043:	c1 e0 02             	shl    $0x2,%eax
+   10046:	01 d0                	add    %edx,%eax
+   10048:	c1 e0 04             	shl    $0x4,%eax
+   1004b:	89 c2                	mov    %eax,%edx
+   1004d:	8b 45 0c             	mov    0xc(%ebp),%eax
+   10050:	01 d0                	add    %edx,%eax
+   10052:	89 45 fc             	mov    %eax,-0x4(%ebp)
+   10055:	66 0f be 45 ec       	movsbw -0x14(%ebp),%ax
+   1005a:	0f b7 c0             	movzwl %ax,%eax
+   1005d:	c1 e0 08             	shl    $0x8,%eax
+   10060:	89 c2                	mov    %eax,%edx
+   10062:	8b 45 e8             	mov    -0x18(%ebp),%eax
+   10065:	09 d0                	or     %edx,%eax
+   10067:	8b 0d 6c 01 01 00    	mov    0x1016c,%ecx
+   1006d:	8b 55 fc             	mov    -0x4(%ebp),%edx
+   10070:	01 d2                	add    %edx,%edx
+   10072:	01 ca                	add    %ecx,%edx
+   10074:	66 89 02             	mov    %ax,(%edx)
+   10077:	90                   	nop
+   10078:	c9                   	leave  
+   10079:	c3                   	ret    
+
+0001007a <vga_clear>:
+   1007a:	55                   	push   %ebp
+   1007b:	89 e5                	mov    %esp,%ebp
+   1007d:	83 ec 10             	sub    $0x10,%esp
+   10080:	6a 00                	push   $0x0
+   10082:	6a 00                	push   $0x0
+   10084:	e8 8c ff ff ff       	call   10015 <vga_set_cursor>
+   10089:	83 c4 08             	add    $0x8,%esp
+   1008c:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%ebp)
+   10093:	eb 36                	jmp    100cb <vga_clear+0x51>
+   10095:	c7 45 f8 00 00 00 00 	movl   $0x0,-0x8(%ebp)
+   1009c:	eb 24                	jmp    100c2 <vga_clear+0x48>
+   1009e:	ff 75 08             	pushl  0x8(%ebp)
+   100a1:	6a 0f                	push   $0xf
+   100a3:	e8 58 ff ff ff       	call   10000 <color_attr>
+   100a8:	83 c4 08             	add    $0x8,%esp
+   100ab:	0f b6 c0             	movzbl %al,%eax
+   100ae:	50                   	push   %eax
+   100af:	ff 75 f8             	pushl  -0x8(%ebp)
+   100b2:	ff 75 fc             	pushl  -0x4(%ebp)
+   100b5:	6a 20                	push   $0x20
+   100b7:	e8 6f ff ff ff       	call   1002b <vga_putat_c>
+   100bc:	83 c4 10             	add    $0x10,%esp
+   100bf:	ff 45 f8             	incl   -0x8(%ebp)
+   100c2:	83 7d f8 18          	cmpl   $0x18,-0x8(%ebp)
+   100c6:	76 d6                	jbe    1009e <vga_clear+0x24>
+   100c8:	ff 45 fc             	incl   -0x4(%ebp)
+   100cb:	83 7d fc 4f          	cmpl   $0x4f,-0x4(%ebp)
+   100cf:	76 c4                	jbe    10095 <vga_clear+0x1b>
+   100d1:	90                   	nop
+   100d2:	c9                   	leave  
+   100d3:	c3                   	ret    
+
+Disassembly of section .eh_frame:
+
+000100d4 <.eh_frame>:
+   100d4:	14 00                	adc    $0x0,%al
+   100d6:	00 00                	add    %al,(%eax)
+   100d8:	00 00                	add    %al,(%eax)
+   100da:	00 00                	add    %al,(%eax)
+   100dc:	01 7a 52             	add    %edi,0x52(%edx)
+   100df:	00 01                	add    %al,(%ecx)
+   100e1:	7c 08                	jl     100eb <vga_clear+0x71>
+   100e3:	01 1b                	add    %ebx,(%ebx)
+   100e5:	0c 04                	or     $0x4,%al
+   100e7:	04 88                	add    $0x88,%al
+   100e9:	01 00                	add    %eax,(%eax)
+   100eb:	00 1c 00             	add    %bl,(%eax,%eax,1)
+   100ee:	00 00                	add    %al,(%eax)
+   100f0:	1c 00                	sbb    $0x0,%al
+   100f2:	00 00                	add    %al,(%eax)
+   100f4:	0c ff                	or     $0xff,%al
+   100f6:	ff                   	(bad)  
+   100f7:	ff 15 00 00 00 00    	call   *0x0
+   100fd:	41                   	inc    %ecx
+   100fe:	0e                   	push   %cs
+   100ff:	08 85 02 42 0d 05    	or     %al,0x50d4202(%ebp)
+   10105:	51                   	push   %ecx
+   10106:	c5 0c 04             	lds    (%esp,%eax,1),%ecx
+   10109:	04 00                	add    $0x0,%al
+   1010b:	00 1c 00             	add    %bl,(%eax,%eax,1)
+   1010e:	00 00                	add    %al,(%eax)
+   10110:	3c 00                	cmp    $0x0,%al
+   10112:	00 00                	add    %al,(%eax)
+   10114:	01 ff                	add    %edi,%edi
+   10116:	ff                   	(bad)  
+   10117:	ff 16                	call   *(%esi)
+   10119:	00 00                	add    %al,(%eax)
+   1011b:	00 00                	add    %al,(%eax)
+   1011d:	41                   	inc    %ecx
+   1011e:	0e                   	push   %cs
+   1011f:	08 85 02 42 0d 05    	or     %al,0x50d4202(%ebp)
+   10125:	52                   	push   %edx
+   10126:	c5 0c 04             	lds    (%esp,%eax,1),%ecx
+   10129:	04 00                	add    $0x0,%al
+   1012b:	00 1c 00             	add    %bl,(%eax,%eax,1)
+   1012e:	00 00                	add    %al,(%eax)
+   10130:	5c                   	pop    %esp
+   10131:	00 00                	add    %al,(%eax)
+   10133:	00 f7                	add    %dh,%bh
+   10135:	fe                   	(bad)  
+   10136:	ff                   	(bad)  
+   10137:	ff 4f 00             	decl   0x0(%edi)
+   1013a:	00 00                	add    %al,(%eax)
+   1013c:	00 41 0e             	add    %al,0xe(%ecx)
+   1013f:	08 85 02 42 0d 05    	or     %al,0x50d4202(%ebp)
+   10145:	02 4b c5             	add    -0x3b(%ebx),%cl
+   10148:	0c 04                	or     $0x4,%al
+   1014a:	04 00                	add    $0x0,%al
+   1014c:	1c 00                	sbb    $0x0,%al
+   1014e:	00 00                	add    %al,(%eax)
+   10150:	7c 00                	jl     10152 <vga_clear+0xd8>
+   10152:	00 00                	add    %al,(%eax)
+   10154:	26 ff                	es (bad) 
+   10156:	ff                   	(bad)  
+   10157:	ff 5a 00             	lcall  *0x0(%edx)
+   1015a:	00 00                	add    %al,(%eax)
+   1015c:	00 41 0e             	add    %al,0xe(%ecx)
+   1015f:	08 85 02 42 0d 05    	or     %al,0x50d4202(%ebp)
+   10165:	02 56 c5             	add    -0x3b(%esi),%dl
+   10168:	0c 04                	or     $0x4,%al
+   1016a:	04 00                	add    $0x0,%al
+
+Disassembly of section .data:
+
+0001016c <vga_buffer>:
+   1016c:	00                   	.byte 0x0
+   1016d:	80 0b 00             	orb    $0x0,(%ebx)
+
+Disassembly of section .bss:
+
+00010170 <vga_row>:
+	...
+
+00010171 <vga_coloumn>:
+	...
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	47                   	inc    %edi
+   1:	43                   	inc    %ebx
+   2:	43                   	inc    %ebx
+   3:	3a 20                	cmp    (%eax),%ah
+   5:	28 47 4e             	sub    %al,0x4e(%edi)
+   8:	55                   	push   %ebp
+   9:	29 20                	sub    %esp,(%eax)
+   b:	37                   	aaa    
+   c:	2e                   	cs
+   d:	35                   	.byte 0x35
+   e:	2e 30 00             	xor    %al,%cs:(%eax)
