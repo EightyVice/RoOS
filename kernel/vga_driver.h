@@ -24,12 +24,11 @@ typedef enum {
 
 #define SIZE sizeof(VGA_ATTRIBUTE)
 
-inline static uint8_t color_attr(VGA_COLOR fc, VGA_COLOR bc){
-    return ((uint8_t)fc << 4) | (uint8_t)bc;
-}
+#define COLOR_ATTR(fore, back) (((uint8_t)back << 4) | (uint8_t)fore)
+
 
 inline static uint16_t vga_entry(char c, VGA_COLOR fc, VGA_COLOR bc){
-    return (uint16_t)c << 8 | (uint16_t)color_attr(fc, bc);
+    return ((uint16_t)(COLOR_ATTR(fc, bc))) << 8 | c;
 }
 
 #define VGA_WIDTH 80
@@ -42,5 +41,11 @@ extern uint16_t* vga_buffer;
 
 void vga_set_cursor(int x, int y);
 void vga_clear(VGA_COLOR color);
-void vga_putat_c(char c, size_t x, size_t y, uint16_t color);
-//void vga_putat(char c, size_t x, size_t y);
+void vga_putat_c(char c, size_t x, size_t y, uint8_t color);
+void vga_putat_c_cnt(char c, size_t x, size_t y, uint8_t color, size_t count);
+void vga_putat(char c, size_t x, size_t y);
+void vga_puts(char* str, size_t x, size_t y);
+void vga_puts(char* str, size_t x, size_t y);
+void vga_puts_c(char* str, size_t x, size_t y, uint8_t color);
+void vga_putcolor(VGA_COLOR fore, VGA_COLOR back, size_t x, size_t y);
+char vga_getchar(size_t x, size_t y);

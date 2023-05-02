@@ -2,6 +2,10 @@
     "C_Cpp.errorSquiggles": "enabled",
     "files.associations": {
         "stdint.h": "c",
-        "vga_driver.h": "c"
+        "vga_driver.h": "c",
+        "*.def": "c",
+        "random": "c",
+        "terminal.h": "c",
+        "string.h": "c"
     }
 }
