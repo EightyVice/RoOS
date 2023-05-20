@@ -85,4 +85,6 @@ str_disk_load db "Done. Loading stage 2...", 0xD, 0xA, 0
     %include "bios_print.inc"    
 
     times 510 - ($-$$) db 0    ; Fill the sector by zeroes
+
+
     dw 0xAA55                  ; Boot Signature

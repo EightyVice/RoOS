@@ -35,6 +35,10 @@ void terminal_print(char* text){
     }  
 } 
 
+void terminal_status_print(char* text){
+    vga_puts(text, 0, 24);
+}
+
 void terminal_init(){ 
     for (size_t i = 0; i < sizeof(buffer) / sizeof(uint16_t); i++)
     {

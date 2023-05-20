@@ -33,7 +33,7 @@ $(OUT_DIR)/stage2.bin: $(BOOT_DIR)/stage2.asm
 # Linking kernel
 $(OUT_DIR)/kernel.elf: $(OBJS) $(KERNEL_DIR)/linker.ld
 	echo $(OBJS)
-	$(LD) -T $(KERNEL_DIR)/linker.ld $(OBJS)  -o $@
+	$(LD) -T $(KERNEL_DIR)/linker.ld $(OBJS)  -o $@ -Map=kernel.map
 
 disasm: $(OUT_DIR)/kernel.elf
 	$(OBJDUMP) --disassemble-all $^ > kernel.s1
@@ -42,8 +42,8 @@ disasm: $(OUT_DIR)/kernel.elf
 $(OUT_DIR)/kernel.bin: $(OUT_DIR)/kernel.elf
 	$(OBJCOPY) -O binary $^ $@
 
-$(OUT_DIR)/%.o: $(KERNEL_DIR)/%.c
-	$(GCC) $^ -I $(KERNEL_DIR) -c -Wall -nostdlib -ffreestanding -o $@ -mno-sse -mno-sse2
+$(OUT_DIR)/%.o: $(KERNEL_DIR)/%.c 
+	$(GCC) $< -I $(KERNEL_DIR) -c -Wall -nostdlib -ffreestanding -o $@ -mno-sse -mno-sse2 -mgeneral-regs-only
 
 
 # Building the image

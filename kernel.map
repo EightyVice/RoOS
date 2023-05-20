@@ -1,0 +1,125 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+buffer              0x4c2c            ./out/terminal.o
+idt                 0x800             ./out/idt.o
+idtr                0x6               ./out/idt.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000010000                . = 0x10000
+
+.text           0x0000000000010000      0x852
+ *(.entry)
+ .entry         0x0000000000010000       0x36 ./out/kernel_main.o
+                0x0000000000010000                kernel_entry
+ *(.text*)
+ .text          0x0000000000010036      0x15f ./out/pic_driver.o
+                0x0000000000010085                pic_remap_vectors
+                0x0000000000010165                pic_send_eoi
+ .text          0x0000000000010195      0x11d ./out/idt.o
+                0x0000000000010195                idt_set_descriptor
+                0x00000000000101e8                default_handler
+                0x000000000001020e                interrupt_handler
+                0x0000000000010247                idt_init
+ .text          0x00000000000102b2      0x1a2 ./out/terminal.o
+                0x00000000000102e2                putat
+                0x0000000000010380                terminal_print
+                0x00000000000103fb                terminal_status_print
+                0x0000000000010416                terminal_init
+ .text          0x0000000000010454      0x3ab ./out/vga_driver.o
+                0x000000000001048e                enable_cursor
+                0x0000000000010511                vga_set_cursor
+                0x0000000000010527                vga_putat_c
+                0x0000000000010573                vga_putat_c_cnt
+                0x00000000000105ba                vga_putat
+                0x000000000001060b                vga_puts
+                0x0000000000010650                vga_puts_c
+                0x00000000000106a4                vga_putcolor
+                0x0000000000010786                vga_clear
+                0x00000000000107d9                vga_getchar
+ .text          0x00000000000107ff       0x53 ./out/kernel_main.o
+                0x00000000000107ff                screen_init
+
+.iplt           0x0000000000010852        0x0
+ .iplt          0x0000000000010852        0x0 ./out/pic_driver.o
+
+.rodata         0x0000000000010852       0x2f
+ *(.rodata)
+ .rodata        0x0000000000010852       0x1b ./out/idt.o
+ .rodata        0x000000000001086d       0x14 ./out/kernel_main.o
+
+.eh_frame       0x0000000000010884      0x3b0
+ .eh_frame      0x0000000000010884       0xb8 ./out/pic_driver.o
+ .eh_frame      0x000000000001093c       0x8c ./out/idt.o
+                                         0xa4 (size before relaxing)
+ .eh_frame      0x00000000000109c8       0xa8 ./out/terminal.o
+                                         0xc0 (size before relaxing)
+ .eh_frame      0x0000000000010a70      0x188 ./out/vga_driver.o
+                                        0x1a0 (size before relaxing)
+ .eh_frame      0x0000000000010bf8       0x3c ./out/kernel_main.o
+                                         0x54 (size before relaxing)
+
+.rel.dyn        0x0000000000010c34        0x0
+ .rel.got       0x0000000000010c34        0x0 ./out/pic_driver.o
+ .rel.iplt      0x0000000000010c34        0x0 ./out/pic_driver.o
+ .rel.text      0x0000000000010c34        0x0 ./out/pic_driver.o
+
+.data           0x0000000000010c34        0x8
+ *(.data)
+ .data          0x0000000000010c34        0x0 ./out/pic_driver.o
+ .data          0x0000000000010c34        0x4 ./out/idt.o
+                0x0000000000010c34                status
+ .data          0x0000000000010c38        0x0 ./out/terminal.o
+ .data          0x0000000000010c38        0x4 ./out/vga_driver.o
+                0x0000000000010c38                vga_buffer
+ .data          0x0000000000010c3c        0x0 ./out/kernel_main.o
+
+.got            0x0000000000010c3c        0x0
+ .got           0x0000000000010c3c        0x0 ./out/pic_driver.o
+
+.got.plt        0x0000000000010c3c        0x0
+ .got.plt       0x0000000000010c3c        0x0 ./out/pic_driver.o
+
+.igot.plt       0x0000000000010c3c        0x0
+ .igot.plt      0x0000000000010c3c        0x0 ./out/pic_driver.o
+
+.bss            0x0000000000010c40     0x545a
+ *(COMMON)
+ COMMON         0x0000000000010c40      0x806 ./out/idt.o
+                0x0000000000010c40                idt
+                0x0000000000011440                idtr
+ *fill*         0x0000000000011446       0x1a 
+ COMMON         0x0000000000011460     0x4c2c ./out/terminal.o
+                0x0000000000011460                buffer
+ *(.bss)
+ .bss           0x000000000001608c        0x0 ./out/pic_driver.o
+ .bss           0x000000000001608c        0x0 ./out/idt.o
+ .bss           0x000000000001608c        0xc ./out/terminal.o
+                0x000000000001608c                terminal_x
+                0x0000000000016090                terminal_y
+                0x0000000000016094                start
+ .bss           0x0000000000016098        0x2 ./out/vga_driver.o
+                0x0000000000016098                vga_row
+                0x0000000000016099                vga_coloumn
+ .bss           0x000000000001609a        0x0 ./out/kernel_main.o
+LOAD ./out/pic_driver.o
+LOAD ./out/idt.o
+LOAD ./out/terminal.o
+LOAD ./out/vga_driver.o
+LOAD ./out/kernel_main.o
+OUTPUT(out/kernel.elf elf32-i386)
+
+.comment        0x0000000000000000       0x11
+ .comment       0x0000000000000000       0x11 ./out/pic_driver.o
+                                         0x12 (size before relaxing)
+ .comment       0x0000000000000011       0x12 ./out/idt.o
+ .comment       0x0000000000000011       0x12 ./out/terminal.o
+ .comment       0x0000000000000011       0x12 ./out/vga_driver.o
+ .comment       0x0000000000000011       0x12 ./out/kernel_main.o

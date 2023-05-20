@@ -1,7 +1,7 @@
 //#include "../crt/stdlib.h"
 
 #include "vga_driver.h"
-#include "kernel.h"
+#include "hal.h"
 
 
 uint8_t vga_row = 0;

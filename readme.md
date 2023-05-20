@@ -25,6 +25,7 @@ I'm working on Windows, WSL and using NASM as assembler, QEMU for testing as a V
 
 ## Resources that I learn from
 * https://wiki.osdev.org/
+* Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1
 * https://github.com/pritamzope/OS
 * http://www.brokenthorn.com/Resources/OSDevIndex.html
 * I already learnt assembly before so only I use NASM documentation
