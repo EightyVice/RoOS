@@ -18,9 +18,9 @@ void screen_init(){
 */
 __attribute__((section(".entry")))
 void kernel_entry()  {
-    pic_remap_vectors(0x20, 0x28);
-   
     idt_init();
+    pic_remap_vectors(0x20, 0x28);
+   asm volatile("sti");
 
 
     screen_init();
@@ -28,7 +28,6 @@ void kernel_entry()  {
     terminal_init();
     
     terminal_print("Welcome^_^\n ");
-
     while(1); // Loop forever to prevent death!!
 }
 

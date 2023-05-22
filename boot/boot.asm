@@ -38,10 +38,10 @@ entry:
     mov bx, ax                  ;
    
 
-    mov ah, 0x02    ; READ_DISK_SETOR
+    mov ah, 0x02    ; READ_DISK_SECTOR
     mov al, 1       ; Number of sectors to read
     mov ch, 0       ; Track
-    mov cl, 2       ; Sector number (sectors strats from 1)
+    mov cl, 2       ; Sector number (sectors start from 1)
     mov dh, 0       ; Head number 
     mov dl, 0x80       ; Drive number (0=A:, 1=2nd floppy, 80h=drive 0, 81h=drive 1)
     int 0x13

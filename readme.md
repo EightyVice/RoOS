@@ -13,7 +13,12 @@ The OS targets Legacy BIOS, not UEFI so it's MBR (Master Boot Record). I'm not u
 * Bootloader (two stages because of the 512 limit per sector)
     * Stage 1 bootloader *on track sector 1*
     * Stage 2 bootloader *on track sector 2*
-* Kernel (TBD)
+* Kernel  *on the rest of the image sectors*
+    * Drivers
+        * 8592 PIC
+        * VGA
+    * Interfaces & Usermode
+        * Terminal Interface
 
 
 ## Development Environent
@@ -24,8 +29,8 @@ I'm working on Windows, WSL and using NASM as assembler, QEMU for testing as a V
 
 
 ## Resources that I learn from
-* https://wiki.osdev.org/
-* Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1
+* https://wiki.osdev.org/ 
+* [Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1](https://www.intel.com/content/www/us/en/architecture-and-technology/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.html)
 * https://github.com/pritamzope/OS
 * http://www.brokenthorn.com/Resources/OSDevIndex.html
 * I already learnt assembly before so only I use NASM documentation

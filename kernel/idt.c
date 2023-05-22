@@ -41,7 +41,7 @@ void idt_init(){
         idt_set_descriptor(vec, default_handler, 0x8E);
     }
 
-    idt_set_descriptor(0x20, interrupt_handler, 0x8E);
+    //idt_set_descriptor(0x20, interrupt_handler, 0x8E);
 
     //Load the new IDT
     asm volatile("lidt %0" : : "m"(idtr));  // LIDT [idtr]

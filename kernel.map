@@ -15,80 +15,80 @@ Linker script and memory map
 
                 0x0000000000010000                . = 0x10000
 
-.text           0x0000000000010000      0x852
+.text           0x0000000000010000      0x83e
  *(.entry)
- .entry         0x0000000000010000       0x36 ./out/kernel_main.o
+ .entry         0x0000000000010000       0x37 ./out/kernel_main.o
                 0x0000000000010000                kernel_entry
  *(.text*)
- .text          0x0000000000010036      0x15f ./out/pic_driver.o
-                0x0000000000010085                pic_remap_vectors
-                0x0000000000010165                pic_send_eoi
- .text          0x0000000000010195      0x11d ./out/idt.o
-                0x0000000000010195                idt_set_descriptor
-                0x00000000000101e8                default_handler
-                0x000000000001020e                interrupt_handler
+ .text          0x0000000000010037      0x15f ./out/pic_driver.o
+                0x0000000000010086                pic_remap_vectors
+                0x0000000000010166                pic_send_eoi
+ .text          0x0000000000010196      0x108 ./out/idt.o
+                0x0000000000010196                idt_set_descriptor
+                0x00000000000101e9                default_handler
+                0x000000000001020f                interrupt_handler
                 0x0000000000010247                idt_init
- .text          0x00000000000102b2      0x1a2 ./out/terminal.o
-                0x00000000000102e2                putat
-                0x0000000000010380                terminal_print
-                0x00000000000103fb                terminal_status_print
-                0x0000000000010416                terminal_init
- .text          0x0000000000010454      0x3ab ./out/vga_driver.o
-                0x000000000001048e                enable_cursor
-                0x0000000000010511                vga_set_cursor
-                0x0000000000010527                vga_putat_c
-                0x0000000000010573                vga_putat_c_cnt
-                0x00000000000105ba                vga_putat
-                0x000000000001060b                vga_puts
-                0x0000000000010650                vga_puts_c
-                0x00000000000106a4                vga_putcolor
-                0x0000000000010786                vga_clear
-                0x00000000000107d9                vga_getchar
- .text          0x00000000000107ff       0x53 ./out/kernel_main.o
-                0x00000000000107ff                screen_init
+ .text          0x000000000001029e      0x1a2 ./out/terminal.o
+                0x00000000000102ce                putat
+                0x000000000001036c                terminal_print
+                0x00000000000103e7                terminal_status_print
+                0x0000000000010402                terminal_init
+ .text          0x0000000000010440      0x3ab ./out/vga_driver.o
+                0x000000000001047a                enable_cursor
+                0x00000000000104fd                vga_set_cursor
+                0x0000000000010513                vga_putat_c
+                0x000000000001055f                vga_putat_c_cnt
+                0x00000000000105a6                vga_putat
+                0x00000000000105f7                vga_puts
+                0x000000000001063c                vga_puts_c
+                0x0000000000010690                vga_putcolor
+                0x0000000000010772                vga_clear
+                0x00000000000107c5                vga_getchar
+ .text          0x00000000000107eb       0x53 ./out/kernel_main.o
+                0x00000000000107eb                screen_init
 
-.iplt           0x0000000000010852        0x0
- .iplt          0x0000000000010852        0x0 ./out/pic_driver.o
+.iplt           0x000000000001083e        0x0
+ .iplt          0x000000000001083e        0x0 ./out/pic_driver.o
 
-.rodata         0x0000000000010852       0x2f
+.rodata         0x000000000001083e       0x2f
  *(.rodata)
- .rodata        0x0000000000010852       0x1b ./out/idt.o
- .rodata        0x000000000001086d       0x14 ./out/kernel_main.o
+ .rodata        0x000000000001083e       0x1b ./out/idt.o
+ .rodata        0x0000000000010859       0x14 ./out/kernel_main.o
 
-.eh_frame       0x0000000000010884      0x3b0
- .eh_frame      0x0000000000010884       0xb8 ./out/pic_driver.o
- .eh_frame      0x000000000001093c       0x8c ./out/idt.o
+.eh_frame       0x0000000000010870      0x3b0
+ .eh_frame      0x0000000000010870       0xb8 ./out/pic_driver.o
+ .eh_frame      0x0000000000010928       0x8c ./out/idt.o
                                          0xa4 (size before relaxing)
- .eh_frame      0x00000000000109c8       0xa8 ./out/terminal.o
+ .eh_frame      0x00000000000109b4       0xa8 ./out/terminal.o
                                          0xc0 (size before relaxing)
- .eh_frame      0x0000000000010a70      0x188 ./out/vga_driver.o
+ .eh_frame      0x0000000000010a5c      0x188 ./out/vga_driver.o
                                         0x1a0 (size before relaxing)
- .eh_frame      0x0000000000010bf8       0x3c ./out/kernel_main.o
+ .eh_frame      0x0000000000010be4       0x3c ./out/kernel_main.o
                                          0x54 (size before relaxing)
 
-.rel.dyn        0x0000000000010c34        0x0
- .rel.got       0x0000000000010c34        0x0 ./out/pic_driver.o
- .rel.iplt      0x0000000000010c34        0x0 ./out/pic_driver.o
- .rel.text      0x0000000000010c34        0x0 ./out/pic_driver.o
+.rel.dyn        0x0000000000010c20        0x0
+ .rel.got       0x0000000000010c20        0x0 ./out/pic_driver.o
+ .rel.iplt      0x0000000000010c20        0x0 ./out/pic_driver.o
+ .rel.text      0x0000000000010c20        0x0 ./out/pic_driver.o
 
-.data           0x0000000000010c34        0x8
+.data           0x0000000000010c20        0x8
  *(.data)
- .data          0x0000000000010c34        0x0 ./out/pic_driver.o
- .data          0x0000000000010c34        0x4 ./out/idt.o
-                0x0000000000010c34                status
- .data          0x0000000000010c38        0x0 ./out/terminal.o
- .data          0x0000000000010c38        0x4 ./out/vga_driver.o
-                0x0000000000010c38                vga_buffer
- .data          0x0000000000010c3c        0x0 ./out/kernel_main.o
+ .data          0x0000000000010c20        0x0 ./out/pic_driver.o
+ .data          0x0000000000010c20        0x4 ./out/idt.o
+                0x0000000000010c20                status
+ .data          0x0000000000010c24        0x0 ./out/terminal.o
+ .data          0x0000000000010c24        0x4 ./out/vga_driver.o
+                0x0000000000010c24                vga_buffer
+ .data          0x0000000000010c28        0x0 ./out/kernel_main.o
 
-.got            0x0000000000010c3c        0x0
- .got           0x0000000000010c3c        0x0 ./out/pic_driver.o
+.got            0x0000000000010c28        0x0
+ .got           0x0000000000010c28        0x0 ./out/pic_driver.o
 
-.got.plt        0x0000000000010c3c        0x0
- .got.plt       0x0000000000010c3c        0x0 ./out/pic_driver.o
+.got.plt        0x0000000000010c28        0x0
+ .got.plt       0x0000000000010c28        0x0 ./out/pic_driver.o
 
-.igot.plt       0x0000000000010c3c        0x0
- .igot.plt      0x0000000000010c3c        0x0 ./out/pic_driver.o
+.igot.plt       0x0000000000010c28        0x0
+ .igot.plt      0x0000000000010c28        0x0 ./out/pic_driver.o
 
 .bss            0x0000000000010c40     0x545a
  *(COMMON)
