@@ -1,3 +1,4 @@
+#include "kernel.h"
 #include "vga_driver.h"
 #include "terminal.h"
 
@@ -16,12 +17,13 @@ void screen_init(){
     ------------------
     this function must be exported with section .entry
 */
+
+uint32_t kernel_tick = 0;
+
 __attribute__((section(".entry")))
 void kernel_entry()  {
-    idt_init();
+    idt_init(); 
     pic_remap_vectors(0x20, 0x28);
-   asm volatile("sti");
-
 
     screen_init();
 

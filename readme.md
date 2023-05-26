@@ -1,6 +1,5 @@
 # My OS Implementation (Not named yet)
 I'm doing a little OS for teaching myself this black magic
-
 ## Goal
 I'm trying to write the possible minimal OS for me, so I will be writing stuff from scratch (that's why I'm not going to use GRUB even, imagine the pain, don't hate me!) 
 

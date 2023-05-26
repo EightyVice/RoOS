@@ -6,6 +6,8 @@
         "*.def": "c",
         "random": "c",
         "terminal.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "idt.h": "c",
+        "algorithm": "c"
     }
 }

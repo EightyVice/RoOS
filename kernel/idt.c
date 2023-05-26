@@ -1,7 +1,8 @@
 #include "idt.h"
 #include "terminal.h"
 #include "vga_driver.h"
-
+#include "pic_driver.h"
+#include "kernel.h"
 
 __attribute__((aligned(0x10))) 
 idt_entry_t idt[256]; // Array of Interrupt Descriptors as IDT
@@ -24,12 +25,25 @@ void default_handler(){
     terminal_print("The system has fallen :(");
 }
 
-char* status = "0";
 struct interrupt_frame;
-__attribute__((interrupt)) void interrupt_handler(struct interrupt_frame* frame){
-    ++status[0];
-    terminal_status_print(status);
+#define INTERRUPT(name) __attribute__((interrupt)) void name(struct interrupt_frame* frame)
 
+INTERRUPT(pit_timer){
+    
+    // Increament kernel ticks counter
+    ++kernel_tick;
+
+    char anim_set[4] = {'\\', '|', '/', '-'};
+    char* anim = "    ";
+
+    for (size_t i = 0; i < 4; i++)
+        anim[i] = ' ';
+    
+    anim[kernel_tick % 4] = '#';
+    
+    vga_puts_c(anim, VGA_WIDTH - 4, VGA_HIEGHT - 1, COLOR_ATTR(VGA_COLOR_LIGHT_RED, VGA_COLOR_WHITE));
+    
+    pic_send_eoi(0);
 }
 
 void idt_init(){
@@ -41,7 +55,7 @@ void idt_init(){
         idt_set_descriptor(vec, default_handler, 0x8E);
     }
 
-    //idt_set_descriptor(0x20, interrupt_handler, 0x8E);
+    idt_set_descriptor(0x20, pit_timer, 0x8E);
 
     //Load the new IDT
     asm volatile("lidt %0" : : "m"(idtr));  // LIDT [idtr]
