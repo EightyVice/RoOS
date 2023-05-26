@@ -2,6 +2,7 @@
 #include "terminal.h"
 #include "vga_driver.h"
 #include "pic_driver.h"
+#include "hal.h"
 #include "kernel.h"
 
 __attribute__((aligned(0x10))) 
@@ -23,6 +24,8 @@ void idt_set_descriptor(uint8_t vector, void* ir, uint8_t flags){
 void default_handler(){
     vga_clear(VGA_COLOR_RED);
     terminal_print("The system has fallen :(");
+    asm volatile("cli; hlt"); // Completely hangs the computer
+
 }
 
 struct interrupt_frame;
@@ -38,12 +41,18 @@ INTERRUPT(pit_timer){
 
     for (size_t i = 0; i < 4; i++)
         anim[i] = ' ';
-    
+
     anim[kernel_tick % 4] = '#';
     
     vga_puts_c(anim, VGA_WIDTH - 4, VGA_HIEGHT - 1, COLOR_ATTR(VGA_COLOR_LIGHT_RED, VGA_COLOR_WHITE));
     
     pic_send_eoi(0);
+}
+
+INTERRUPT(keyboard){
+    terminal_println("Keyboard key is pressed");
+    uint8_t scancode = inb(0x60);
+    pic_send_eoi(1);
 }
 
 void idt_init(){
@@ -56,6 +65,7 @@ void idt_init(){
     }
 
     idt_set_descriptor(0x20, pit_timer, 0x8E);
+    idt_set_descriptor(0x21, keyboard, 0x8E);
 
     //Load the new IDT
     asm volatile("lidt %0" : : "m"(idtr));  // LIDT [idtr]
