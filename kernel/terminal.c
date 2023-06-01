@@ -15,11 +15,11 @@ uint16_t buffer[TERMINAL_WIDTH][TERMINAL_HIGHT];
 
 void putat(char c, size_t x, size_t y){
         buffer[x][y] = (buffer[x][y] & 0xFF00) | c;
-        if(terminal_y - start >= 0){
+        //if(terminal_y - start >= 0){
             // put at VGA
             //vga_putat(c, x, terminal_y - start + 1);
             vga_buffer[x + ((y + 1) * VGA_WIDTH)] = buffer[x][y];
-        }
+        //}
 }
 void terminal_print(char* text){
     for (size_t i = 0; text[i] != '\0'; i++)
@@ -35,6 +35,11 @@ void terminal_print(char* text){
     }  
 } 
 
+void terminal_println(char* text){
+    terminal_print(text);
+    terminal_x = 0;
+    terminal_y++;
+}
 void terminal_status_print(char* text){
     vga_puts(text, 0, 24);
 }

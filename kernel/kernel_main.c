@@ -29,7 +29,8 @@ void kernel_entry()  {
 
     terminal_init();
     
-    terminal_print("Welcome^_^\n ");
+    terminal_println("Welcome^_^");
+
     while(1); // Loop forever to prevent death!!
 }
 
