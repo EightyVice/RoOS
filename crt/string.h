@@ -3,3 +3,4 @@
 
 void memcpy(void* dst, void* src, size_t count);
 void memset(void* ptr, int value, size_t num);
+void strcpy(char* dst, const char* src);

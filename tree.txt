@@ -1,0 +1,46 @@
+.
+├── Makefile
+├── boot
+│   ├── bios_print.inc
+│   ├── boot.asm
+│   ├── gdt.inc
+│   ├── stage2.asm
+│   └── stdio.inc
+├── crt
+│   ├── ctype.h
+│   ├── stdarg.h
+│   ├── stdint.h
+│   ├── stdio.c
+│   ├── stdio.h
+│   ├── stdlib.h
+│   ├── string.c
+│   ├── string.h
+│   └── va_list.h
+├── git
+├── i386-elf-7.5.0-Linux-x86_64
+├── kernel
+│   ├── com_driver.c
+│   ├── com_driver.h
+│   ├── hal.h
+│   ├── idt.c
+│   ├── idt.h
+│   ├── kernel.h
+│   ├── kernel_main.c
+│   ├── linker.ld
+│   ├── pic_driver.c
+│   ├── pic_driver.h
+│   ├── terminal.c
+│   ├── terminal.h
+│   ├── vga_driver.c
+│   └── vga_driver.h
+├── kernel.map
+├── kernel.s1
+├── out
+│   ├── boot.bin
+│   └── stage2.bin
+├── output
+├── readme.md
+├── run.sh
+└── tree.txt
+
+107 directories, 807 files

@@ -42,9 +42,9 @@ INTERRUPT(pit_timer){
     for (size_t i = 0; i < 4; i++)
         anim[i] = ' ';
 
-    anim[kernel_tick % 4] = '#';
+    anim[kernel_tick % 4] = 219; // █
     
-    vga_puts_c(anim, VGA_WIDTH - 4, VGA_HIEGHT - 1, COLOR_ATTR(VGA_COLOR_LIGHT_RED, VGA_COLOR_WHITE));
+    vga_puts_c(anim, VGA_WIDTH - 4, VGA_HIEGHT - 1, COLOR_ATTR(VGA_COLOR_RED, VGA_COLOR_WHITE));
     
     pic_send_eoi(0);
 }
@@ -53,7 +53,7 @@ INTERRUPT(keyboard){
     terminal_println("Keyboard key is pressed");
     uint8_t scancode = inb(0x60);
     pic_send_eoi(1);
-}
+} 
 
 void idt_init(){
     idtr.base = (uint32_t)&idt;

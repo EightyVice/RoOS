@@ -14,3 +14,13 @@ void memset(void* ptr, int value, size_t num){
     for (size_t i = 0; i < num; i++)
         d[i] = val;
 }
+
+void strcpy(char* dst, const char* src){
+    while(*src != '\0'){
+        *dst = *src;
+
+        *dst++;
+        *src++;
+    }
+    *dst = '\0';
+}

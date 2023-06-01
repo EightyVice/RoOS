@@ -70,7 +70,7 @@ void vga_clear(VGA_COLOR color){
     {
         for (size_t y = 0; y < VGA_HIEGHT; y++)
         {
-            vga_putat_c(' ', x, y, COLOR_ATTR(VGA_COLOR_BLACK , color));
+            vga_putat_c(' ', x, y, COLOR_ATTR(VGA_COLOR_BLUE , color));
         }        
     }
 }

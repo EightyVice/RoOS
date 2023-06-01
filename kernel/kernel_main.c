@@ -4,6 +4,9 @@
 
 #include "pic_driver.h"
 #include "idt.h"
+
+#include "../crt/stdio.h"
+
 void screen_init(){
 	vga_clear(TERMINAL_BACKCOLOR);
 
@@ -29,8 +32,11 @@ void kernel_entry()  {
 
     terminal_init();
     
-    terminal_println("Welcome^_^");
+    char hello[50];
+    sprintf(hello, "Welcome to %s", "RoOS!");
 
+    terminal_println(hello);
+    terminal_println("This is a very long text to be written and it should have the words to be wrapped, and It's very simple to be done.");
     while(1); // Loop forever to prevent death!!
 }
 
