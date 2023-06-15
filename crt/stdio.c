@@ -8,6 +8,7 @@ int sprintf(char* str, const char* fmt, ...){
     va_list ap;
     va_start(ap, fmt);
     
+    int dest_pos = 0;
 
     while(*fmt != '\0'){
 
@@ -15,6 +16,7 @@ int sprintf(char* str, const char* fmt, ...){
             switch (*(++fmt))
             {
                 case 'd':{
+                    // unsigned 32bit integer
                     int32_t si = va_arg(ap, int32_t);
                 }
                 break;
@@ -23,16 +25,21 @@ int sprintf(char* str, const char* fmt, ...){
                     // String operand
                     const char* vstr = va_arg(ap, char*);
                     while(*vstr != '\0'){
-                        vstr++;
+                       *(str + dest_pos) = *vstr;
+                       vstr++;
+                       dest_pos++;
                     }
+                    *fmt++;
+                    continue;
                 }
                 break;
                 default:  return -1;
             }
         }else{
-            *str = *fmt;
+            *(str + dest_pos) = *fmt;
         }
         fmt++;
+        dest_pos++;
     }
 
     va_end(ap);

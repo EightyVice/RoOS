@@ -33,7 +33,7 @@ void kernel_entry()  {
     terminal_init();
     
     char hello[50];
-    sprintf(hello, "Welcome to %s", "RoOS!");
+    sprintf(hello, "Welcome to %s Mr %s", "RoOS!", "Zeyad");
 
     terminal_println(hello);
     terminal_println("This is a very long text to be written and it should have the words to be wrapped, and It's very simple to be done.");
