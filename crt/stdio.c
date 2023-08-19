@@ -17,7 +17,27 @@ int sprintf(char* str, const char* fmt, ...){
             {
                 case 'd':{
                     // unsigned 32bit integer
-                    int32_t si = va_arg(ap, int32_t);
+                    int32_t si = va_arg(ap, int32_t);   // 1202456 
+                    char strint[11];
+                    int digits = 0;
+                    int temp = si;
+                    int index = 0;
+                    while(temp != 0){
+                        strint[index] = temp % 10;
+                        temp /= 10;
+                        index++;
+                        digits++;
+                    }
+                    
+                    for (size_t i = digits - 1; i > 0; i--)
+                    {
+                        *(str + dest_pos) = strint[i] + '0';
+                        dest_pos++;
+                    }
+                    
+
+                    // convert to string
+                    
                 }
                 break;
 
